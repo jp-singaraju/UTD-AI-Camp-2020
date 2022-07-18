@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>Linear Regression.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #808080;}
+.s3 { color: #6a8759;}
+.s4 { color: #6897bb;}
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Linear Regression.py</font>
+</center></td></tr></table>
+<pre><a name="l1"><span class="ln">1    </span></a><span class="s0">import </span><span class="s1">pandas </span><span class="s0">as </span><span class="s1">pd</span>
+<a name="l2"><span class="ln">2    </span></a><span class="s0">import </span><span class="s1">random </span><span class="s0">as </span><span class="s1">r</span>
+<a name="l3"><span class="ln">3    </span></a><span class="s0">import </span><span class="s1">matplotlib.pyplot </span><span class="s0">as </span><span class="s1">plt</span>
+<a name="l4"><span class="ln">4    </span></a>
+<a name="l5"><span class="ln">5    </span></a><span class="s2"># read the dataset</span>
+<a name="l6"><span class="ln">6    </span></a><span class="s1">dataset = pd.read_csv(</span><span class="s3">'/PranavSoftwares/PyCharm Code/UTD AI Camp/data.train'</span><span class="s1">)</span>
+<a name="l7"><span class="ln">7    </span></a>
+<a name="l8"><span class="ln">8    </span></a><span class="s2"># define the values and set length of set</span>
+<a name="l9"><span class="ln">9    </span></a><span class="s1">x = dataset.iloc[:</span><span class="s0">, </span><span class="s4">0</span><span class="s1">]</span>
+<a name="l10"><span class="ln">10   </span></a><span class="s1">y = dataset.iloc[:</span><span class="s0">, </span><span class="s4">1</span><span class="s1">]</span>
+<a name="l11"><span class="ln">11   </span></a><span class="s1">n = len(x)</span>
+<a name="l12"><span class="ln">12   </span></a><span class="s1">der_ab = []</span>
+<a name="l13"><span class="ln">13   </span></a><span class="s1">learning_rate = </span><span class="s4">10 </span><span class="s1">** -</span><span class="s4">6</span>
+<a name="l14"><span class="ln">14   </span></a>
+<a name="l15"><span class="ln">15   </span></a><span class="s2"># assign a random value to [a, b]</span>
+<a name="l16"><span class="ln">16   </span></a><span class="s1">der_ab = [r.randint(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">10</span><span class="s1">)</span><span class="s0">, </span><span class="s1">r.randint(</span><span class="s4">0</span><span class="s0">, </span><span class="s4">10</span><span class="s1">)]</span>
+<a name="l17"><span class="ln">17   </span></a>
+<a name="l18"><span class="ln">18   </span></a>
+<a name="l19"><span class="ln">19   </span></a><span class="s2"># update a and b values with derivatives</span>
+<a name="l20"><span class="ln">20   </span></a><span class="s0">def </span><span class="s1">derivative_ab():</span>
+<a name="l21"><span class="ln">21   </span></a>    <span class="s1">a = </span><span class="s4">0</span>
+<a name="l22"><span class="ln">22   </span></a>    <span class="s1">b = </span><span class="s4">0</span>
+<a name="l23"><span class="ln">23   </span></a>    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(n):</span>
+<a name="l24"><span class="ln">24   </span></a>        <span class="s1">a += </span><span class="s4">2 </span><span class="s1">* x[i] * ((der_ab[</span><span class="s4">0</span><span class="s1">] * x[i] + der_ab[</span><span class="s4">1</span><span class="s1">]) - y[i])</span>
+<a name="l25"><span class="ln">25   </span></a>        <span class="s1">b += </span><span class="s4">2 </span><span class="s1">* (der_ab[</span><span class="s4">0</span><span class="s1">] * x[i] + der_ab[</span><span class="s4">1</span><span class="s1">] - y[i])</span>
+<a name="l26"><span class="ln">26   </span></a>    <span class="s1">der_ab[</span><span class="s4">0</span><span class="s1">] = der_ab[</span><span class="s4">0</span><span class="s1">] - (learning_rate * (a / n))</span>
+<a name="l27"><span class="ln">27   </span></a>    <span class="s1">der_ab[</span><span class="s4">1</span><span class="s1">] = der_ab[</span><span class="s4">1</span><span class="s1">] - (learning_rate * (b / n))</span>
+<a name="l28"><span class="ln">28   </span></a>
+<a name="l29"><span class="ln">29   </span></a>
+<a name="l30"><span class="ln">30   </span></a><span class="s2"># make a main function to check loss and update accordingly</span>
+<a name="l31"><span class="ln">31   </span></a><span class="s0">def </span><span class="s1">main():</span>
+<a name="l32"><span class="ln">32   </span></a>    <span class="s1">curr_loss = </span><span class="s4">0</span>
+<a name="l33"><span class="ln">33   </span></a>    <span class="s1">z = </span><span class="s4">0</span>
+<a name="l34"><span class="ln">34   </span></a>    <span class="s0">while </span><span class="s1">z &lt; </span><span class="s4">300</span><span class="s1">:</span>
+<a name="l35"><span class="ln">35   </span></a>        <span class="s1">prev_loss = curr_loss</span>
+<a name="l36"><span class="ln">36   </span></a>        <span class="s1">curr_loss = </span><span class="s4">0</span>
+<a name="l37"><span class="ln">37   </span></a>        <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range(n):</span>
+<a name="l38"><span class="ln">38   </span></a>            <span class="s1">curr_loss += ((der_ab[</span><span class="s4">0</span><span class="s1">] * x[i] + der_ab[</span><span class="s4">1</span><span class="s1">]) - y[i]) ** </span><span class="s4">2</span>
+<a name="l39"><span class="ln">39   </span></a>        <span class="s1">curr_loss /= n</span>
+<a name="l40"><span class="ln">40   </span></a>        <span class="s0">if </span><span class="s1">curr_loss &gt; prev_loss != </span><span class="s4">0</span><span class="s1">:</span>
+<a name="l41"><span class="ln">41   </span></a>            <span class="s0">break</span>
+<a name="l42"><span class="ln">42   </span></a>        <span class="s0">else</span><span class="s1">:</span>
+<a name="l43"><span class="ln">43   </span></a>            <span class="s1">print(</span><span class="s3">f'Run: </span><span class="s0">{</span><span class="s1">z</span><span class="s0">}</span><span class="s3">, Loss: </span><span class="s0">{</span><span class="s1">curr_loss</span><span class="s0">}</span><span class="s3">'</span><span class="s1">)</span>
+<a name="l44"><span class="ln">44   </span></a>            <span class="s1">derivative_ab()</span>
+<a name="l45"><span class="ln">45   </span></a>        <span class="s1">z += </span><span class="s4">1</span>
+<a name="l46"><span class="ln">46   </span></a>    <span class="s1">print(</span><span class="s3">f'Final: f(x) = </span><span class="s0">{</span><span class="s1">der_ab[</span><span class="s4">0</span><span class="s1">]</span><span class="s0">}</span><span class="s3">x + </span><span class="s0">{</span><span class="s1">der_ab[</span><span class="s4">1</span><span class="s1">]</span><span class="s0">}</span><span class="s3">'</span><span class="s1">)</span>
+<a name="l47"><span class="ln">47   </span></a>    <span class="s1">y_pred = der_ab[</span><span class="s4">0</span><span class="s1">] * x + der_ab[</span><span class="s4">1</span><span class="s1">]</span>
+<a name="l48"><span class="ln">48   </span></a>
+<a name="l49"><span class="ln">49   </span></a>    <span class="s1">plt.scatter(x</span><span class="s0">, </span><span class="s1">y)</span>
+<a name="l50"><span class="ln">50   </span></a>    <span class="s1">plt.plot([min(x)</span><span class="s0">, </span><span class="s1">max(x)]</span><span class="s0">, </span><span class="s1">[min(y_pred)</span><span class="s0">, </span><span class="s1">max(y_pred)]</span><span class="s0">, </span><span class="s1">color=</span><span class="s3">'orange'</span><span class="s1">)</span>
+<a name="l51"><span class="ln">51   </span></a>    <span class="s1">plt.show()</span>
+<a name="l52"><span class="ln">52   </span></a>
+<a name="l53"><span class="ln">53   </span></a>
+<a name="l54"><span class="ln">54   </span></a><span class="s2"># call the main function</span>
+<a name="l55"><span class="ln">55   </span></a><span class="s1">main()</span></pre>
+</body>
+</html>
